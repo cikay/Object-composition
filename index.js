@@ -26,9 +26,9 @@ const canPrivateThing = (state) => ({
   [privateMethod]() {
     const { publicState, privateState } = state
     console.log('I am private method')
-    console.log('before ', state.privateProp)
-    state.privateProp = 'changed in privateMethod method'
-    console.log('after ', state.privateProp)
+    console.log('before ', privateState.privateProp)
+    privateState.privateProp = 'changed in privateMethod method'
+    console.log('after ', privateState.privateProp)
   },
 })
 
@@ -37,8 +37,7 @@ const canFight = (state) => ({
     const { publicState, privateState } = state
     console.log(`${publicState.name} slashes at the foe`)
     publicState.stamina--
-    const privateThing = canPrivateThing(privateState)
-    privateThing[privateMethod]()
+    publicState[privateMethod]()
     return publicState
   },
 })
