@@ -26,6 +26,7 @@ const canPrivateThing = (state) => ({
     console.log('after ', state.privateProp)
   },
 })
+
 const canFight = (state) => ({
   fight() {
     console.log(`${state.name} slashes at the foe`)
@@ -48,7 +49,7 @@ const createFighter = (name) => {
     privateProp: 'I am private',
   }
 
-  const state = Object.assign(publicState, privateState)
+  const state = Object.assign({}, publicState, privateState)
 
   return Object.assign(
     publicState,
@@ -60,7 +61,8 @@ const createFighter = (name) => {
 
 const fighter = createFighter('Muzaffer')
 fighter.fight()
-
+console.log('fighter')
+console.log(fighter)
 const createMage = (name) => {
   const state = {
     name,
