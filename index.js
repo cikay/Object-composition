@@ -65,6 +65,5 @@ const createFighter = (name) => {
 }
 
 const fighter = createFighter('Muzaffer')
-const chainingFighter = fighter.fight().doOtherThing()
-console.log('chaining fighter')
-console.log(chainingFighter)
+fighter.fight()
+fighter.doOtherThing()
