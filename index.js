@@ -1,10 +1,9 @@
 const canCast = (state) => ({
   cast(spell) {
-    const { publicState, privateState } = state
+    const { publicState } = state
     console.log(`${publicState.name} casts ${spell}`)
     publicState.mana--
     console.log(publicState.mana)
-    return publicState
   },
 })
 
@@ -16,7 +15,6 @@ const canOtherThing = (state) => ({
     console.log('before ', privateState.privateProp)
     privateState.privateProp = 'changed in doOtherThing method'
     console.log('after ', privateState.privateProp)
-    return publicState
   },
 })
 
@@ -36,8 +34,8 @@ const canFight = (state) => ({
     const { publicState } = state
     console.log(`${publicState.name} slashes at the foe`)
     publicState.stamina--
-    publicState[privateMethod]()
-    return publicState
+    const privateThingObj = canPrivateThing(state)
+    privateThingObj[privateMethod]()
   },
 })
 
@@ -58,6 +56,7 @@ const createFighter = (name) => {
   }
 
   return Object.assign(
+    {},
     publicState,
     canFight(state),
     canOtherThing(state),
