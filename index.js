@@ -27,14 +27,13 @@ const canPrivateThing = (state) => ({
   },
 })
 
-const canFight = (state) => ({
+const canFight = (state, publicState) => ({
   fight() {
     console.log(`${state.name} slashes at the foe`)
     state.stamina--
-    const otherThing = canOtherThing(state)
-    otherThing.doOtherThing()
     const privateThing = canPrivateThing(state)
     privateThing[privateMethod]()
+    return publicState
   },
 })
 
@@ -46,23 +45,22 @@ const createFighter = (name) => {
   }
 
   const privateState = {
-    privateProp: 'I am private',
+    privateProp: 'I am privateProp',
   }
 
   const state = Object.assign({}, publicState, privateState)
 
   return Object.assign(
     publicState,
-    canFight(state),
-    canOtherThing(state),
-    canPrivateThing(state)
+    canFight(state, publicState),
+    canOtherThing(state, publicState),
+    canPrivateThing(state, publicState)
   )
 }
 
 const fighter = createFighter('Muzaffer')
-fighter.fight()
-console.log('fighter')
-console.log(fighter)
+fighter.fight().doOtherThing()
+
 const createMage = (name) => {
   const state = {
     name,
