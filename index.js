@@ -45,16 +45,14 @@ const createFighter = (name) => {
     publicState,
     privateState,
   }
-  const privateMethod = Symbol('privateMethod')
 
   const behavior = {
     fight: getFight(state),
     doOtherThing: getDoOtherThing(state),
     cast: getCast(state),
-    [privateMethod]: getPrivateMethod(state),
   }
 
-  return Object.assign({}, publicState, behavior)
+  return Object.assign(behavior, publicState)
 }
 
 const fighter = createFighter('Muzaffer')
