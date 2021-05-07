@@ -1,61 +1,32 @@
 const getCast = (state) => (spell) => {
-  const { publicState } = state
-  console.log(`${publicState.name} casts ${spell}`)
-  publicState.mana--
-  console.log(publicState.mana)
-}
-
-const getDoOtherThing = (state) => () => {
-  const { privateState } = state
-  console.log('I am doing other stuff')
-  console.log('and this is state that I access', state)
-  console.log('before ', privateState.privateProp)
-  privateState.privateProp = 'changed in doOtherThing method'
-  console.log('after ', privateState.privateProp)
+  console.log(`${state.name} casts ${spell}`)
+  state.mana--
+  console.log(state.mana)
 }
 
 const getPrivateMethod = (state) => () => {
-  const { privateState } = state
-  console.log('I am private method')
-  console.log('before ', privateState.privateProp)
-  privateState.privateProp = 'changed in privateMethod method'
-  console.log('after ', privateState.privateProp)
+  console.log('I am privatePethod and that is state I access', state)
 }
 
 const getFight = (state) => () => {
-  const { publicState } = state
-  console.log(`${publicState.name} slashes at the foe`)
-  publicState.stamina--
+  console.log(`${state.name} slashes at the foe`)
+  state.stamina--
   const privateMethod = getPrivateMethod(state)
   privateMethod()
 }
 
 const createFighter = (name) => {
-  const publicState = {
+  const state = Object.freeze({
     name,
     health: 100,
     stamina: 100,
-  }
-
-  const privateState = {
-    privateProp: 'I am privateProp',
-  }
-
-  const state = {
-    publicState,
-    privateState,
-  }
-
-  const behavior = {
+  })
+  // just return functions, keep all properties private that is more safe
+  return Object.freeze({
     fight: getFight(state),
-    doOtherThing: getDoOtherThing(state),
     cast: getCast(state),
-  }
-
-  return Object.assign(behavior, publicState)
+  })
 }
 
-const fighter = createFighter('Muzaffer')
+const fighter = createFighter('Slasher')
 fighter.fight()
-fighter.doOtherThing()
-console.log(fighter)
