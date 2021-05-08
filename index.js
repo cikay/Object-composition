@@ -1,3 +1,5 @@
+'use strict'
+
 const getCast = (state) => (spell) => {
   console.log(`${state.name} casts ${spell}`)
   state.mana--
@@ -16,11 +18,11 @@ const getFight = (state) => () => {
 }
 
 const createFighter = (name) => {
-  const state = Object.freeze({
+  const state = {
     name,
     health: 100,
     stamina: 100,
-  })
+  }
   // just return functions, keep all properties private that is more safe
   return Object.freeze({
     fight: getFight(state),
