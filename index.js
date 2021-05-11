@@ -1,20 +1,21 @@
 'use strict'
 
-const getCast = (state) => (spell) => {
-  console.log(`${state.name} casts ${spell}`)
-  state.mana--
-  console.log(state.mana)
+const doOtherThing = (state, ...args) => {
+  console.log('args', ...args)
+  console.log('state', state)
 }
 
-const getPrivateMethod = (state) => () => {
-  console.log('I am privatePethod and that is state I access', state)
-}
+const withState =
+  (state) =>
+  (fn) =>
+  (...args) => {
+    fn(state, ...args)
+    return fn
+  }
 
-const getFight = (state) => () => {
-  console.log(`${state.name} slashes at the foe`)
+const fight = (state, ...args) => {
   state.stamina--
-  const privateMethod = getPrivateMethod(state)
-  privateMethod()
+  console.log('state', state)
 }
 
 const createFighter = (name) => {
@@ -25,10 +26,14 @@ const createFighter = (name) => {
   }
   // just return functions, keep all properties private that is more safe
   return Object.freeze({
-    fight: getFight(state),
-    cast: getCast(state),
+    doOtherThing: withState(state)(doOtherThing),
+    fight: withState(state)(fight),
   })
 }
 
 const fighter = createFighter('Slasher')
-fighter.fight()
+const withoutStateFight1 = fighter.doOtherThing('muzaffer')
+const fighter2 = createFighter('Slasher')
+const withoutStateFight2 = fighter2.doOtherThing('süleyman')
+console.log(fighter.doOtherThing === fighter2.doOtherThing)
+console.log(withoutStateFight2 === withoutStateFight1)
